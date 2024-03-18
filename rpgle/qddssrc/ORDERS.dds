@@ -1,0 +1,12 @@
+     A                                      REF(SAMREF)
+     A          R FORDE
+     A            ORID      R
+     A            ORYEAR    R               REFFLD(YEAR)
+     A            ORCUID    R               REFFLD(CUID)
+     A            ORDATE         8  0       TEXT('ORDER DATE')
+     A                                      COLHDG('ORDER' 'DATE')
+     A            ORDATDEL       8  0       TEXT('DELIVERY DATE')
+     A                                      COLHDG('DELIVERY' 'DATE')
+     A            ORDATCLO       8  0       TEXT('CLOSE DATE')
+     A                                      COLHDG('CLOSE' 'DATE')
+     A            ORTOT     R               REFFLD(TOTPRICE)

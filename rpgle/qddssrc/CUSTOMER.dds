@@ -1,0 +1,21 @@
+     A                                      UNIQUE
+     A          R FCUST
+     A            CUID           5P 0       TEXT('CUSTOMER ID')
+     A            CUSTNM        30A         TEXT('CUSTOMER NAME')
+     A            CUPHONE       15A         TEXT('PHONE NUMBER')
+     A            CUVAT         12A         TEXT('VAT NUMBER')
+     A            CUMAIL        50A         TEXT('ADDRESS MAIL')
+     A            CULINE1       50A         TEXT('ADDRESS LINE')
+     A            CULINE2       50A         TEXT('ADDRESS LINE')
+     A            CULINE3       50A         TEXT('ADDRESS LINE')
+     A            CUZIP         10A         TEXT('ZIP CODE')
+     A            CUCITY        30A         TEXT('CYTY')
+     A            CUCOUN         2A         TEXT('COUNTRY CODE')
+     A            CUCAT          2A         TEXT('CUSTOMER CATEGORY')
+     A            CULIMCRE       9P 2       TEXT('CREDIT LIMIT')
+     A            CUCREDIT       9P 2       TEXT('CREDIT')
+     A            CULASTORD      8P 0       TEXT('LAST ORDER DATE')
+     A            CUCREA          L         TEXT('CREATEIN DATE')
+     A            CUMODID       10A         TEXT('LAST MOD USER')
+     A            CUDEL          1A         TEXT('DELETE CODE X=DELETED')
+     A          K CUID

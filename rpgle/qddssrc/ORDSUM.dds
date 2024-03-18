@@ -1,0 +1,6 @@
+     A                                      REF(SAMREF)
+     A          R FORDSU
+     A            ORID      R
+     A            OSCUNM        30A         TEXT('CUSTOMER NAME')
+     A            OSCUID    R               REFFLD(CUID)
+     A            OSTOT     R               REFFLD(TOTPRICE)

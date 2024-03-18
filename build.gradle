@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.strumenta.rpg'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation files('jars/rpg-parser-2.1.48-all.jar')
+    implementation 'commons-cli:commons-cli:1.4'
+    implementation 'org.apache.commons:commons-text:1.11.0'
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
