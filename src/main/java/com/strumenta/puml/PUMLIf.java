@@ -39,4 +39,8 @@ public class PUMLIf extends PUMLStatement {
     public ArrayList<PUMLStatement> getBody() {
         return then;
     }
+
+    public boolean hasEmptyBody() {
+        return this.then.stream().allMatch(s -> s instanceof PUMLEmpty);
+    }
 }

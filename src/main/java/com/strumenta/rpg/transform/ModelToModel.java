@@ -94,6 +94,10 @@ public class ModelToModel extends AbstractModelTransformer {
             for (Statement body : stmt.getThenBody()) {
                 ifThen.getBody().add(transformStatement(cu, body));
             }
+//  REFINEMENT
+//            if (ifThen.hasEmptyBody()) {
+//                return new PUMLEmpty();
+//            }
             return ifThen;
         }
 

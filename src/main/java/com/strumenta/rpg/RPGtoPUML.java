@@ -52,12 +52,13 @@ public class RPGtoPUML {
                 );
                 pipeline.run();
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.err.println("Exception: " + e.getMessage());
                 System.exit(1);
             }
 
             // Process the input file path
         } catch (ParseException e) {
+            System.err.println("Invalid command.");
             formatter.printHelp("RPGtoPUML", options);
             System.exit(1);
         }
