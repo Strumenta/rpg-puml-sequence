@@ -11,6 +11,7 @@ import java.util.List;
  * a larger PUML structure.
  */
 public class PUMLDiagram extends PUMLNode {
+    private final List<PUMLEntity> entities = new ArrayList<>();
     private final List<PUMLStatement> statements = new ArrayList<>();
     /**
      * Adds a PUML statement to the diagram.
@@ -23,6 +24,12 @@ public class PUMLDiagram extends PUMLNode {
         statements.add(statement);
         return statement;
     }
+
+    public PUMLEntity add(PUMLEntity entity) {
+        entity.setParent(this);
+        entities.add(entity);
+        return entity;
+    }
     /**
      * Retrieves the list of PUML statements that make up the diagram.
      *
@@ -30,5 +37,15 @@ public class PUMLDiagram extends PUMLNode {
      */
     public List<PUMLStatement> getStatements() {
         return statements;
+    }
+
+    public List<PUMLEntity> getEntities() {
+        return entities;
+    }
+
+    public void ensureHasEntity(String entityName, PUMLEntity.EntityType entityType) {
+        if (entities.stream().noneMatch(e -> e.getName().equals(entityName))) {
+            add(new PUMLEntity(entityName, entityType));
+        }
     }
 }

@@ -21,6 +21,8 @@ public class PUMLCodeGenerator {
 
 hide footbox
 
+${entities}
+
 skinparam sequence {
     ArrowColor Black
     LifeLineBorderColor #000000

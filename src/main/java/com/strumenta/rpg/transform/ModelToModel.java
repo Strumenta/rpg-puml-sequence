@@ -40,20 +40,27 @@ public class ModelToModel extends AbstractModelTransformer {
     @Override
     public Node transform(Node model) throws Exception {
         PUMLDiagram target = new PUMLDiagram();
+
         String file = inputFile.getName();
+
+        // REFINEMENT
+        target.getEntities().add(new PUMLEntity("client", PUMLEntity.EntityType.ACTOR));
+        target.getEntities().add(new PUMLEntity(file, PUMLEntity.EntityType.ENTITY));
+
         if (model instanceof CompilationUnit) {
             CompilationUnit cu = (CompilationUnit) model;
             // RPG code contains an initialization routine it is executed first
             for (Subroutine s : cu.getSubroutines()) {
                 if (s.isInitializationSubroutine()) {
-                    target.add(
-                            new PUMInvoke(file, file, "inzsr", List.of()
-                            ));
+                    PUMInvoke pumInvoke = new PUMInvoke(file, file, "inzsr", List.of());
+                    // REFINEMENT
+                    target.ensureHasEntity(pumInvoke.getMethod(), PUMLEntity.EntityType.ENTITY);
+                    target.add(pumInvoke);
                 }
             }
             // Process the main statements
             for (Statement s : cu.getMainStatements()) {
-                target.add(transformStatement(cu, s));
+                target.add(transformStatement(cu, target, s));
             }
             return target;
         }
@@ -68,19 +75,21 @@ public class ModelToModel extends AbstractModelTransformer {
      * @param statement the RPG statement to be transformed.
      * @return the transformed PUML statement.
      */
-    private PUMLStatement transformStatement(CompilationUnit cu, Statement statement) {
+    private PUMLStatement transformStatement(CompilationUnit cu, PUMLDiagram target, Statement statement) {
         String file = inputFile.getName();
         if (!stack.isEmpty()) {
             file = stack.peek();
         }
         if (statement instanceof InvokeSubroutineStatement stmt) {
             PUMInvoke subroutine = new PUMInvoke(file, stmt.getSubroutine().getName(), stmt.getSubroutine().getName(), List.of());
+            // REFINEMENT
+            target.ensureHasEntity(subroutine.getMethod(), PUMLEntity.EntityType.ENTITY);
 
             for (Subroutine sub : cu.getSubroutines()) {
                 if (stmt.getSubroutine().getName().equalsIgnoreCase(sub.getName())) {
                     stack.push(stmt.getSubroutine().getName());
                     for (Statement s : sub.getStatements()) {
-                        subroutine.getBody().add(transformStatement(cu, s));
+                        subroutine.getBody().add(transformStatement(cu, target, s));
                     }
                     stack.pop();
                 }
@@ -92,12 +101,12 @@ public class ModelToModel extends AbstractModelTransformer {
             String condition = transformExpression(stmt.getCondition());
             PUMLIf ifThen = new PUMLIf(condition);
             for (Statement body : stmt.getThenBody()) {
-                ifThen.getBody().add(transformStatement(cu, body));
+                ifThen.getBody().add(transformStatement(cu, target, body));
             }
-//  REFINEMENT
-//            if (ifThen.hasEmptyBody()) {
-//                return new PUMLEmpty();
-//            }
+            // REFINEMENT
+            if (ifThen.hasEmptyBody()) {
+                return new PUMLEmpty();
+            }
             return ifThen;
         }
 
@@ -105,7 +114,7 @@ public class ModelToModel extends AbstractModelTransformer {
             String condition = transformExpression(stmt.getCondition());
             PUMLoop loop = new PUMLoop("UNTIL", condition);
             for (Statement body : stmt.getBody()) {
-                loop.getBody().add(transformStatement(cu, body));
+                loop.getBody().add(transformStatement(cu, target, body));
             }
             return loop;
         }
@@ -113,7 +122,10 @@ public class ModelToModel extends AbstractModelTransformer {
         if (statement instanceof SetLowerLimitStatement stmt) {
             String searchArg = transformExpression(stmt.getSearchArgument());
             String reference = transformExpression(stmt.getName());
-            return new PUMInvoke(file, reference, "SETLL", List.of(searchArg, reference));
+            //  REFINEMENT
+            PUMInvoke pumInvoke =  new PUMInvoke(file, reference, "Initialize cursor", List.of(searchArg, reference));
+            target.ensureHasEntity(reference, PUMLEntity.EntityType.DATABASE);
+            return pumInvoke;
         }
 
         if (statement instanceof ReadRecordStatement stmt) {

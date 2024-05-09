@@ -58,16 +58,28 @@ public class ModelToSource extends AbstractModelTransformer {
             }
 
             PUMLDiagram diagram = (PUMLDiagram) model;
+            // REFINEMENT
+            values.put("entities", entitiesFor(diagram));
             String code = generator.generateToString(diagram, values);
             try {
                 Files.write(Paths.get(filePath), Collections.singleton(code), StandardCharsets.UTF_8);
             } catch (IOException e) {
                 throw new Exception(e.getMessage());
             }
+
             return model;
         }
 
 
         throw new Exception(String.format("Invalid input Model: %s",model.getClass().getName()));
+    }
+
+    // REFINEMENT
+    private String entitiesFor(PUMLDiagram diagram) {
+        StringBuilder sb = new StringBuilder();
+        diagram.getEntities().forEach(pumlEntity -> {
+            sb.append(pumlEntity.getType().name().toLowerCase() + " " + pumlEntity.getName() +  "\n");
+        });
+        return sb.toString();
     }
 }

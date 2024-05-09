@@ -22,8 +22,6 @@ public class RPGtoPUML {
      *
      * @param args Command-line arguments, expecting input and output file paths.
      */
-
-
     public static void main(String[] args) {
         Options options = new Options();
 
@@ -47,8 +45,8 @@ public class RPGtoPUML {
             try {
                 Pipeline pipeline = new Pipeline(
                         new SourceToModel(inputFile,outputFile),    // Transform the RPG source code to the model (AST)
-                        new ModelToModel(inputFile,outputFile),     // Transform the RPG Model (AST) to the PlantUML model (AST)
-                        new ModelToSource(inputFile,outputFile)    // Transform the RPG Model (AST) to the PlantUML model (AST)
+                        new ModelToModel(inputFile,outputFile),            // Transform the RPG Model (AST) to the PlantUML model (AST)
+                        new ModelToSource(inputFile,outputFile)            // Transform the PlantUML Model (AST) to the PlantUML code
                 );
                 pipeline.run();
             } catch (Exception e) {
