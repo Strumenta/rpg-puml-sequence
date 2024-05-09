@@ -1,0 +1,65 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+!pragma teoz true
+
+hide footbox
+
+skinparam sequence {
+    ArrowColor Black
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #FFFFFF
+
+    ParticipantBorderColor #000000
+    ParticipantBackgroundColor #FFFFFF
+
+    ParticipantFontColor #000000
+}
+client -> CUS300.rpgle :
+CUS300.rpgle -> CUS300.rpgle : inzsr 
+CUS300.rpgle -> clrsum : clrsum 
+
+
+clrsum -> ORDSUM : SETLL *LOVAL ORDSUM
+loop UNTIL NOT %EOF(ORDSUM)
+clrsum -> ORDSUM : READ ORDSUM
+group IF NOT %EOF(ORDSUM)
+clrsum -> ORDSUM : DELETE ORDSUM
+
+end
+end
+
+CUS300.rpgle -> CUSTOMER : SETLL *LOVAL CUSTOMER
+loop UNTIL NOT %EOF(CUSTOMER)
+CUS300.rpgle -> CUSTOMER : READ CUSTOMER
+group IF NOT %EOF(CUSTOMER)
+CUS300.rpgle -> calctotal : calctotal 
+
+
+calctotal -> ORDERS : SETLL *LOVAL ORDERS
+loop UNTIL NOT %EOF(ORDERS)
+calctotal -> ORDERS : READ ORDERS
+group IF NOT %EOF(ORDERS)
+group IF CUID = ORCUID
+
+
+calctotal -> ORDERS : UPDATE ORDERS
+end
+end
+end
+CUS300.rpgle -> dspcus : dspcus 
+group IF TOTAL > 0
+
+
+end
+group IF TOTAL > 0
+
+
+
+
+CUS300.rpgle -> ORDSUM : WRITE ORDSUM
+end
+end
+end
+@enduml
+

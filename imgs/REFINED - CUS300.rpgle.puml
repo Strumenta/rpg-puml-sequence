@@ -1,0 +1,73 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+!pragma teoz true
+
+hide footbox
+
+actor client
+entity CUS300.rpgle
+entity inzsr
+entity clrsum
+database ORDSUM #1dcf4d
+database CUSTOMER #3ee1ab
+entity calctotal
+database ORDERS #3cb38a
+entity dspcus
+
+
+skinparam sequence {
+    ArrowColor Black
+    LifeLineBorderColor #000000
+    LifeLineBackgroundColor #FFFFFF
+
+    ParticipantBorderColor #000000
+    ParticipantBackgroundColor #FFFFFF
+
+    ParticipantFontColor #000000
+}
+client -> CUS300.rpgle :
+CUS300.rpgle -> CUS300.rpgle : inzsr
+CUS300.rpgle -> clrsum : clrsum
+
+
+clrsum -[#0e6726]> ORDSUM : Initialize cursor *LOVAL ORDSUM
+loop UNTIL NOT %EOF(ORDSUM)
+clrsum -[#0e6726]> ORDSUM : READ ORDSUM
+group IF NOT %EOF(ORDSUM)
+clrsum -> ORDSUM : DELETE ORDSUM
+
+end
+end
+
+CUS300.rpgle -[#1f7055]> CUSTOMER : Initialize cursor *LOVAL CUSTOMER
+loop UNTIL NOT %EOF(CUSTOMER)
+CUS300.rpgle -[#1f7055]> CUSTOMER : READ CUSTOMER
+group IF NOT %EOF(CUSTOMER)
+CUS300.rpgle -> calctotal : calctotal
+
+
+calctotal -[#1e5945]> ORDERS : Initialize cursor *LOVAL ORDERS
+loop UNTIL NOT %EOF(ORDERS)
+calctotal -[#1e5945]> ORDERS : READ ORDERS
+group IF NOT %EOF(ORDERS)
+group IF CUID = ORCUID
+
+
+calctotal -> ORDERS : UPDATE ORDERS
+end
+end
+end
+CUS300.rpgle -> dspcus : dspcus
+
+group IF TOTAL > 0
+
+
+
+
+CUS300.rpgle -[#0e6726]> ORDSUM : WRITE ORDSUM
+end
+end
+end
+@enduml
+
