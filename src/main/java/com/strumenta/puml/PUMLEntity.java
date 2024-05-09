@@ -1,5 +1,7 @@
 package com.strumenta.puml;
 
+import java.awt.*;
+
 public class PUMLEntity extends PUMLNode {
     public enum EntityType {
         ACTOR,
@@ -9,6 +11,7 @@ public class PUMLEntity extends PUMLNode {
 
     private String name;
     private EntityType type;
+    private Color color;
 
     public PUMLEntity(String name) {
         this(name, EntityType.ENTITY);
@@ -25,5 +28,13 @@ public class PUMLEntity extends PUMLNode {
 
     public EntityType getType() {
         return type;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 }

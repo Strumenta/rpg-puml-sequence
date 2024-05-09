@@ -1,5 +1,6 @@
 package com.strumenta.puml;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,9 +44,14 @@ public class PUMLDiagram extends PUMLNode {
         return entities;
     }
 
-    public void ensureHasEntity(String entityName, PUMLEntity.EntityType entityType) {
+    public void ensureHasEntity(String entityName, PUMLEntity.EntityType entityType, Color color) {
         if (entities.stream().noneMatch(e -> e.getName().equals(entityName))) {
-            add(new PUMLEntity(entityName, entityType));
+            PUMLEntity entity = new PUMLEntity(entityName, entityType);
+            entity.setColor(color);
+            add(entity);
         }
+    }
+    public void ensureHasEntity(String entityName, PUMLEntity.EntityType entityType) {
+        ensureHasEntity(entityName, entityType, null);
     }
 }

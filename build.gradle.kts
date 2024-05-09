@@ -30,5 +30,6 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
 java.sourceCompatibility = JavaVersion.VERSION_16
 java.targetCompatibility = JavaVersion.VERSION_16

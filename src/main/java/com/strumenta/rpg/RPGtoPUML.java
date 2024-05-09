@@ -50,6 +50,7 @@ public class RPGtoPUML {
                 );
                 pipeline.run();
             } catch (Exception e) {
+                e.printStackTrace();
                 System.err.println("Exception: " + e.getMessage());
                 System.exit(1);
             }

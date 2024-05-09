@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.strumenta.puml.ColorUtils.toHexColor;
+
 /**
  * Generates PlantUML (PUML) code from a given PUML diagram model.
  * This class translates PUML diagram components into a textual representation
@@ -45,7 +47,11 @@ ${sequence}
             PUMInvoke s = (PUMInvoke)statement;
             String args = String.join(" ", s.getParams());
             ArrayList<String> sequence = new ArrayList<>();
-            sequence.add(String.format("%s -> %s : %s %s",s.getCaller(),s.getReceiver(),s.getMethod(),args));
+            String operator = "->";
+            if (s.getColor() != null) {
+                operator = "-[#" + toHexColor(s.getColor()) + "]>";
+            }
+            sequence.add(String.format("%s %s %s : %s %s",s.getCaller(), operator, s.getReceiver(),s.getMethod(),args));
             for(PUMLStatement ps : s.getBody()) {
                 sequence.add(print(ps));
             }

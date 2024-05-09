@@ -4,6 +4,7 @@ import com.strumenta.kolasu.model.Node;
 import com.strumenta.puml.PUMLCodeGenerator;
 import com.strumenta.puml.PUMLDiagram;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -11,6 +12,8 @@ import java.util.HashMap;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
+
+import static com.strumenta.puml.ColorUtils.toHexColor;
 
 /**
  * Transformer for converting a PUML model into PlantUML source code.
@@ -78,8 +81,14 @@ public class ModelToSource extends AbstractModelTransformer {
     private String entitiesFor(PUMLDiagram diagram) {
         StringBuilder sb = new StringBuilder();
         diagram.getEntities().forEach(pumlEntity -> {
-            sb.append(pumlEntity.getType().name().toLowerCase() + " " + pumlEntity.getName() +  "\n");
+            String colorSuffix = "";
+            if (pumlEntity.getColor() != null) {
+                colorSuffix = " #"+toHexColor(pumlEntity.getColor());
+            }
+            sb.append(pumlEntity.getType().name().toLowerCase() + " " + pumlEntity.getName() +  colorSuffix + "\n");
         });
         return sb.toString();
     }
+
+
 }

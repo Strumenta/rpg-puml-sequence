@@ -5,6 +5,7 @@ import com.strumenta.puml.*;
 import com.strumenta.rpgparser.model.*;
 
 
+import java.awt.Color;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
@@ -123,19 +124,27 @@ public class ModelToModel extends AbstractModelTransformer {
             String searchArg = transformExpression(stmt.getSearchArgument());
             String reference = transformExpression(stmt.getName());
             //  REFINEMENT
-            PUMInvoke pumInvoke =  new PUMInvoke(file, reference, "Initialize cursor", List.of(searchArg, reference));
-            target.ensureHasEntity(reference, PUMLEntity.EntityType.DATABASE);
+            PUMInvoke pumInvoke = new PUMInvoke(file, reference, "Initialize cursor", List.of(searchArg, reference));
+            Color entityColor = randomColor(reference);
+            target.ensureHasEntity(reference, PUMLEntity.EntityType.DATABASE, entityColor);
+            pumInvoke.setColor(darkerShade(entityColor));
             return pumInvoke;
         }
 
         if (statement instanceof ReadRecordStatement stmt) {
             String reference = transformExpression(stmt.getName());
-            return new PUMInvoke(file, reference, "READ", List.of(reference));
+            PUMInvoke pumInvoke = new PUMInvoke(file, reference, "READ", List.of(reference));
+            Color entityColor = randomColor(reference);
+            pumInvoke.setColor(darkerShade(entityColor));
+            return pumInvoke;
         }
 
         if (statement instanceof WriteRecordStatement stmt) {
             String reference = transformExpression(stmt.getName());
-            return new PUMInvoke(file, reference, "WRITE", List.of(reference));
+            PUMInvoke pumInvoke = new PUMInvoke(file, reference, "WRITE", List.of(reference));
+            Color entityColor = randomColor(reference);
+            pumInvoke.setColor(darkerShade(entityColor));
+            return pumInvoke;
         }
         if (statement instanceof DeleteRecordStatement stmt) {
             String reference = transformExpression(stmt.getName());
@@ -196,5 +205,29 @@ public class ModelToModel extends AbstractModelTransformer {
         }
 
         return "???";
+    }
+
+    private Color randomColor(String name) {
+        long code = name.hashCode();
+        int red = sanitizeColorComponent(code * 11 + 73);
+        int green = sanitizeColorComponent(code * 97 + 113);
+        int blue = sanitizeColorComponent(code * 71 + 373);
+        return new Color(red, green, blue);
+    }
+
+    private Color darkerShade(Color originalColor) {
+        int red = sanitizeColorComponent(originalColor.getRed() / 2);
+        int green = sanitizeColorComponent(originalColor.getGreen() / 2);
+        int blue = sanitizeColorComponent(originalColor.getBlue() / 2);
+        return new Color(red, green, blue);
+    }
+
+    private int sanitizeColorComponent(long value) {
+        int v = (int)value;
+        if (v < 0) {
+            v = v * -1;
+        }
+        v = v % 255;
+        return v;
     }
 }

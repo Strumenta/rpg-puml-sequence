@@ -1,5 +1,6 @@
 package com.strumenta.puml;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class PUMInvoke extends PUMLStatement {
     private final String method;
     private final List<String> params;
     private final List<PUMLStatement> body;
+    private Color color;
 
     /**
      * Constructs a PUMInvoke statement with specified caller, receiver, method, and parameters.
@@ -74,5 +76,13 @@ public class PUMInvoke extends PUMLStatement {
      */
     public List<PUMLStatement> getBody() {
         return body;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 }
